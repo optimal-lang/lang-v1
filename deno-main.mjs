@@ -57,4 +57,4 @@ def")
 (console.log (&& (< 2 4) (> 3 4]
   (try (throw 123)
   (catch ex (console.log ex]
-`); // glob.runAll()
+`); // run()
