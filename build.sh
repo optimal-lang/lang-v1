@@ -8,4 +8,7 @@ if [ ! -f "package-lock.json" ]; then
     ./init.sh
 fi
 rm -rf dist
-npm run build
+# 開発環境用の場合
+#npm run dev
+# 本番環境用の場合
+npm run pro
