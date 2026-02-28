@@ -1,3 +1,5 @@
+#! /usr/bin/env deno-run
+
 import { run } from "./src/omljs.mjs";
 run(`
 (define my_var 777)

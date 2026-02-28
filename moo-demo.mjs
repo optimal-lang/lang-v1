@@ -1,3 +1,5 @@
+#! /usr/bin/env deno-run
+
 // https://deno.land/x/moo@0.5.1-deno
 import moo from "https://deno.land/x/moo@0.5.1-deno/mod.ts";
 

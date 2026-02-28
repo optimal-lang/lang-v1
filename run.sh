@@ -5,4 +5,4 @@ cd "$(dirname "$0")"
 cwd=`pwd`
 ts=`date "+%Y.%m%d.%H%M.%S"`
 
-deno-run index.mjs
+deno-run main.mjs
