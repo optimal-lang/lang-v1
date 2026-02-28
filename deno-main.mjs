@@ -4,8 +4,15 @@
 import { run } from "./src/omljs.mjs";
 
 run(`
+(console.log "abc
+def")
 (console.log ("@" "111+222"))
 (console.log (@ "1111+2222"))
+(console.log (@ "
+1111
++
+2222
+"))
 (console.log (list @ "1111+2222"))
 (console.log "str")
 (console.log "ハロー©")

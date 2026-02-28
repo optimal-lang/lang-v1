@@ -75,6 +75,8 @@ function read_sexp(code, exp) {
   case "}":
     return ch;
   case '"':
+    token = token.replaceAll("\r\n", "\n");
+    token = token.replaceAll("\n", "\\n");
     token = JSON.parse(token);
     return token;
   case "@":
@@ -175,7 +177,6 @@ export function astequal(a, b) {
   }
   if (a instanceof Function || b instanceof Function) {
     // Function
-    //console.log("function not supported!!")
     return false;
   } else if (typeof (a) === 'object' && typeof (b) === 'object') {
     // Object
