@@ -6,6 +6,10 @@ eval(text);
 run(`
 (console.log "abc
 def")
+(console.log {
+  "abc" "xyz"
+  "bbb" (11 undefined "ハロー©")
+})
 (console.log @111+222@)
 (console.log @ 1111+2222 @)
 (console.log @
