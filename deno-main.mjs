@@ -1,7 +1,5 @@
 #! /usr/bin/env deno-run
-//import * as dummy from "./dist/bundle.js";
-
-const text = await Deno.readTextFile("./dist/bundle.js");
+const text = await Deno.readTextFile("./dist/omljs.js");
 eval(text);
 
 run(`
