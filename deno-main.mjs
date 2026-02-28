@@ -1,9 +1,12 @@
 #! /usr/bin/env deno-run
-const text = await Deno.readTextFile("./dist/omljs.js");
-eval(text);
+//const text = await Deno.readTextFile("./dist/omljs.js");
+//eval(text);
+import { run } from "./src/omljs.mjs";
 
 run(`
-(console.log @11+22@)
+(console.log ("@" "111+222"))
+(console.log (@ "1111+2222"))
+(console.log (list @ "1111+2222"))
 (console.log "str")
 (console.log "ハロー©")
 (define xyz 777)

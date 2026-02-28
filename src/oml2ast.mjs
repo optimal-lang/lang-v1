@@ -1,11 +1,10 @@
 function tokenize(str) {
-  let re = /[\s,]*([()\[\]{}'`]|"(?:\\.|[^\\"])*"|@(?:@@|[^@])*@|;.*|#.*|[^\s,()\[\]{}'"`;@]*)/g;
+  let re = /[\s,]*([()\[\]{}'`]|"(?:\\.|[^\\"])*"|@|;.*|#.*|[^\s,()\[\]{}'"`;@]*)/g;
   let result = [];
   let token;
   while ((token = re.exec(str)[1]) !== "") {
     if (token[0] === ";") continue;
     if (token[0] === "#") continue;
-    //if (token.match(/^-?[0-9][0-9.]*$/)) token = parseFloat(token, 10);
     if (isFinite(token)) token = parseFloat(token, 10);
     result.push(token);
   }
@@ -79,12 +78,9 @@ function read_sexp(code, exp) {
     token = JSON.parse(token);
     return token;
   case "@":
-    token = token.replace(/(^@|@$)/g, "");
-    token = token.replace(/(@@)/g, "@");
-    return ["@", token];
+    return "@";
   default: {
     if (token[0] === ":") return token;
-    //if (token[0] === "&" && token !== "&") return token;
     if (token[0] === "&") return token;
     let ids = token[0] === "." ? [token] : token.split(".");
     return ["#", ...ids];
@@ -177,31 +173,10 @@ export function astequal(a, b) {
   if (a === b) {
     return true;
   }
-  /*
-    if(a === null){
-    return b === null; // null === null => true
-    }
-  */
-  /*
-    if (a instanceof Array && b instanceof Array) {
-    // Array
-    if (a.length !== b.length) {
-    return false
-    }
-    for (let i = 0; i < a.length; ++i) {
-    const ret = astequal(a[i], b[i]);
-    if (ret === false) {
-    return false
-    }
-    }
-    return true;
-    } else
-  */
   if (a instanceof Function || b instanceof Function) {
     // Function
-    //console.log("function was not supported!!")
-    return false
-    //} else if (typeof (a) === 'object' && typeof (b) === 'object' && !(a instanceof Array) && !(b instanceof Array)) {
+    //console.log("function not supported!!")
+    return false;
   } else if (typeof (a) === 'object' && typeof (b) === 'object') {
     // Object
     const ak = Object.keys(a);
@@ -218,5 +193,5 @@ export function astequal(a, b) {
     }
     return true;
   }
-  return false
+  return false;
 }
