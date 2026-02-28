@@ -9,4 +9,5 @@ if [ ! -f "package-lock.json" ]; then
     ./init.sh
 fi
 
+rm -rf dist
 npm run build
