@@ -1,11 +1,12 @@
 function tokenize(str) {
-  let re = /[\s,]*([()\[\]{}'`]|"(?:\\.|[^\\"])*"|@(?:@@|[^@])*@|;.*|#.*|[^\s,()\[\]{}'"`;@]*)/g;
+  let re = /[\s,]*([()\[\]{}'`]|"(?:\\.|[^\\"])*"|@(?:@@|[^@])*@|;.*|#!.*|##.*|#[\|][\s\S]+?[\|]#|#[a-z]+|[^\s,()\[\]{}'"`;@]*)/g;
   let result = [];
   let token;
   while ((token = re.exec(str)[1]) !== "") {
     if (token[0] === ";") continue;
-    if (token[0] === "#") continue;
-    //if (token.match(/^-?[0-9][0-9.]*$/)) token = parseFloat(token, 10);
+    if (token.startsWith("#!")) continue;
+    if (token.startsWith("##")) continue;
+    if (!token.startsWith("#|") && token.startsWith("#")) token = token.substring(1);
     if (isFinite(token)) token = parseFloat(token, 10);
     result.push(token);
   }
@@ -83,10 +84,15 @@ function read_sexp(code, exp) {
   case "@":
     token = token.replace(/(^@|@$)/g, "");
     token = token.replace(/(@@)/g, "@");
+    token = token.trim();
+    return ["@", token];
+  case "#":
+    token = token.replace(/^#[\|]/g, "");
+    token = token.replace(/[\|]#$/g, "");
+    token = token.trim();
     return ["@", token];
   default: {
     if (token[0] === ":") return token;
-    //if (token[0] === "&" && token !== "&") return token;
     if (token[0] === "&") return token;
     let ids = token[0] === "." ? [token] : token.split(".");
     return ["#", ...ids];
