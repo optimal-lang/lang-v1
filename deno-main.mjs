@@ -4,18 +4,21 @@ eval(text);
 //import { run } from "./src/omljs.mjs";
 
 run(`
-#|
-console.log('inside racket comment!');
-|#
+(console.log #@\`answerA\`={{11+22}}@)
+(console.log ("#@" "\`answerB\`={{110+220}}"))
+(console.log #@
+answer1={{110+220}}
+answer2={{330+440}}
+@)
 (console.log "abc
 def")
 (console.log {
   "abc" "xyz"
   "bbb" (11 undefined "ハロー©")
 })
-(console.log @111+222@)
+(console.log #| 111+222 |#)
 (console.log ("@" "777+888"))
-(console.log @ 1111+2222 @)
+(console.log #| 1111+2222 |#)
 (console.log @
 1111
 +

@@ -1,12 +1,13 @@
 function tokenize(str) {
-  let re = /[\s,]*([()\[\]{}'`]|"(?:\\.|[^\\"])*"|@(?:@@|[^@])*@|;.*|#!.*|##.*|#[\|][\s\S]+?[\|]#|#[a-z]+|[^\s,()\[\]{}'"`;@]*)/g;
+  //let re = /[\s,]*([()\[\]{}'`]|"(?:\\.|[^\\"])*"|@(?:@@|[^@])*@|;.*|#!.*|##.*|#[\|][\s\S]+?[\|]#|#[a-z]+|[^\s,()\[\]{}'"`;@]*)/g;
+  let re = /[\s,]*([()\[\]{}'`]|"(?:\\.|[^\\"])*"|@(?:@@|[^@])*@|#@(?:@@|[^@])*@|;.*|#!.*|##.*|#[\|][\s\S]+?[\|]#|#[a-z]+|[^\s,()\[\]{}'"`;@]*)/g;
   let result = [];
   let token;
   while ((token = re.exec(str)[1]) !== "") {
     if (token[0] === ";") continue;
     if (token.startsWith("#!")) continue;
     if (token.startsWith("##")) continue;
-    if (!token.startsWith("#|") && token.startsWith("#")) token = token.substring(1);
+    if (!token.startsWith("#@") && !token.startsWith("#|") && token.startsWith("#")) token = token.substring(1);
     if (isFinite(token)) token = parseFloat(token, 10);
     result.push(token);
   }
@@ -64,6 +65,7 @@ function read_sexp(code, exp) {
     return ["@", "undefined"];
   }
   let ch = token[0];
+  if (ch == "#") ch = token.slice(0, 2);
   switch (ch) {
   case "(":
   case "[":
@@ -86,11 +88,16 @@ function read_sexp(code, exp) {
     token = token.replace(/(@@)/g, "@");
     token = token.trim();
     return ["@", token];
-  case "#":
+  case "#|":
     token = token.replace(/^#[\|]/g, "");
     token = token.replace(/[\|]#$/g, "");
     token = token.trim();
     return ["@", token];
+  case "#@":
+    token = token.replaceAll("\r\n", "\n");
+    token = token.replace(/(^#@|@$)/g, "");
+    token = token.replace(/(@@)/g, "@");
+    return ["#@", token];
   default: {
     if (token[0] === ":") return token;
     if (token[0] === "&") return token;
